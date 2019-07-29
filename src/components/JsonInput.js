@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 
+const defaultInput = '{}';
+
 export class JsonInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue: '',
+      inputValue: defaultInput,
       isValid: true
     }
-
   }
 
   handleInputChange = (e) => {
@@ -27,18 +28,23 @@ export class JsonInput extends Component {
   handleReset = (e) => {
     e.preventDefault();
     console.log('resetInput');
-    this.setState({ inputValue: '' });
+    this.resetInput();
   }
 
+  resetInput = () => {
+    this.setState({ inputValue: defaultInput });
+  }
+  
   render() {
     return (
       <div>
         <div>
-          <input 
+          <textarea 
             onChange={this.handleInputChange}
             value={this.state.inputValue} 
+            rows={5}
             style={this.state.isValid ? { } : { border: 'solid 2px red'}}>
-          </input>
+          </textarea>
         </div>
         <div>
           <button onClick={this.handleReset}>
