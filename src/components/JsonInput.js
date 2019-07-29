@@ -15,6 +15,7 @@ export class JsonInput extends Component {
     const text = e.target.value;
     this.setState({ inputValue: text });
     console.log(`onInputChanged "${text}"`);
+    this.props.onPayloadChange(text);
     let parsed;
     try {
       parsed = JSON.parse(text);
@@ -23,6 +24,8 @@ export class JsonInput extends Component {
       this.setState({ isValid: false });
       return;
     }
+
+    
   }
 
   handleReset = (e) => {
@@ -32,13 +35,16 @@ export class JsonInput extends Component {
   }
 
   resetInput = () => {
-    this.setState({ inputValue: defaultInput });
+    const newText = defaultInput;
+    this.setState({ inputValue: newText });
+    this.props.onPayloadChange(newText);
   }
   
   render() {
     return (
       <div>
         <div>
+          <h3>Specify Payload Parameters</h3>
           <textarea 
             onChange={this.handleInputChange}
             value={this.state.inputValue} 

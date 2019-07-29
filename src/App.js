@@ -1,16 +1,17 @@
 import React from 'react';
 import './App.css';
 
-import JsonInput from './components/JsonInput';
 import TryButton from './components/TryButton';
+import PayloadTransformer from './components/PayloadTransformer';
 
 
 function App() {
+  
   return (
     <div className="App">
       <header className="App-header">
         <TryButton />
-        <JsonInput />
+        <PayloadTransformer />
         <a
           className="App-link"
           href="https://reactjs.org"
