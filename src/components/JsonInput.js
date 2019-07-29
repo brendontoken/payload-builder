@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 
 export class JsonInput extends Component {
 
+  onInputChanged(e) {
+    console.log('onInputChanged');
+  }
+
   onResetInput(e) {
     e.preventDefault();
     console.log('resetInput');
@@ -11,11 +15,14 @@ export class JsonInput extends Component {
   render() {
     return (
       <div>
-        JSON Input
-        <input></input>
-        <button onClick={this.onResetInput}>
-          Reset
-        </button>
+        <div>
+          <input onInput={this.onInputChanged}></input>
+        </div>
+        <div>
+          <button onClick={this.onResetInput}>
+            Reset
+          </button>
+        </div>
       </div>
     )
   }
