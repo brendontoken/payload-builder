@@ -1,5 +1,6 @@
 {
   "name": "payload-builder",
+  "license": "Open BSV",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
