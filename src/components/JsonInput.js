@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 
-const defaultInput = '{}';
+const defaultInput = `{
+  "header": {
+    "version": 1,
+    "actionCode": "A1"
+  },
+  "actionContents": {
+
+  }
+}`;
 
 export class JsonInput extends Component {
   constructor(props) {
@@ -11,11 +19,14 @@ export class JsonInput extends Component {
     }
   }
 
+  componentDidMount = () => {
+    this.resetInput();
+  }
+
   handleInputChange = (e) => {
     const text = e.target.value;
     this.setState({ inputValue: text });
     console.log(`onInputChanged "${text}"`);
-    this.props.onPayloadChange(text);
     let parsed;
     try {
       parsed = JSON.parse(text);
@@ -25,7 +36,7 @@ export class JsonInput extends Component {
       return;
     }
 
-    
+    this.props.onPayloadChange(text);
   }
 
   handleReset = (e) => {
@@ -48,7 +59,7 @@ export class JsonInput extends Component {
           <textarea 
             onChange={this.handleInputChange}
             value={this.state.inputValue} 
-            rows={5}
+            rows={9}
             style={this.state.isValid ? { } : { border: 'solid 2px red'}}>
           </textarea>
         </div>
