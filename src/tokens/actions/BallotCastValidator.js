@@ -1,0 +1,49 @@
+import ActionValidator from "./ActionValidator";
+import { BallotCast, TxId } from "@tokenized/tokenized";
+
+
+
+class BallotCastValidator extends ActionValidator {
+  constructor() {
+    super();
+    this.actionCode = 'G3';
+    this.txIdRegex = /[0-9a-fA-F]{64}/
+  }
+
+  _validateVersion1 = (actionContents) => {
+    console.log('BallotCastVaidator.validate()');
+    const voteTxId = actionContents.voteTxId;
+    if (!voteTxId) { throw new Error('"voteTxId" is missing in the actionContents.'); }
+    if (!this.txIdRegex.test(voteTxId)) { throw new Error('voteTxId must be a 64 hex characters.'); }
+
+    const vote = actionContents.vote;
+    if (!vote) { throw new Error('"vote is missing in the actionContents."'); }
+    if (typeof vote !== 'string') { throw new Error('vote must be a string.'); }
+    const voteBuf = Buffer.from(vote, 'utf8');
+    if (voteBuf.length > 255) { throw new Error('Byte representation of vote exceeds maximum length of 255.'); }
+    
+    const txIdObject = new TxId();
+    txIdObject.UnmarshalJSON(voteTxId);
+
+    const action = new BallotCast();
+    action.vote_tx_id = txIdObject;
+    action.vote = vote;
+
+    console.log('BallotCast:', action);
+    console.log('BallotCast.Serialize():', action.Serialize().toString('hex'));
+    //console.log('BallotCast.toString():', action.toString());
+
+    return action;
+  }
+
+  validate = (actionContents, version) => {
+    switch (version) {
+      case 1:
+        return this._validateVersion1(actionContents);
+      default:
+        throw new Error(`version of ${version} in invalid.`);  
+    }
+  }
+}
+
+export default BallotCastValidator

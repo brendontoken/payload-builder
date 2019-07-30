@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PayloadValidator from '../tokens/PayloadValidator';
 
 const defaultInput = `{
   "header": {
@@ -15,8 +16,11 @@ export class JsonInput extends Component {
     super(props);
     this.state = {
       inputValue: defaultInput,
-      isValid: true
+      isValid: true,
+      validationErrorMessage: ''
     }
+
+    this.validator = new PayloadValidator();
   }
 
   componentDidMount = () => {
@@ -32,11 +36,24 @@ export class JsonInput extends Component {
       parsed = JSON.parse(text);
       this.setState({ isValid: true });
     } catch(e) {
-      this.setState({ isValid: false });
+      this.setState({ 
+        isValid: false,
+        validationErrorMessage: 'Not valid JSON.'
+       });
       return;
     }
 
-    this.props.onPayloadChange(text);
+    let action;
+    try {
+      action = this.validator.validate(parsed);
+      this.setState({ validationErrorMessage: ''});
+    } catch (e) {
+      console.log('Payload validation error:', e);
+      const errorMessage = e.message || 'Unknown error.';
+      this.setState({ validationErrorMessage: errorMessage });
+    }
+
+    this.props.onPayloadChange(action);
   }
 
   handleReset = (e) => {
@@ -48,7 +65,7 @@ export class JsonInput extends Component {
   resetInput = () => {
     const newText = defaultInput;
     this.setState({ inputValue: newText });
-    this.props.onPayloadChange(newText);
+    this.props.onPayloadChange(null);
   }
   
   render() {
@@ -57,11 +74,15 @@ export class JsonInput extends Component {
         <div>
           <h3>Specify Payload Parameters</h3>
           <textarea 
+            cols={70} // 64 for txid hex, plus a bit
             onChange={this.handleInputChange}
             value={this.state.inputValue} 
-            rows={9}
+            rows={10}
             style={this.state.isValid ? { } : { border: 'solid 2px red'}}>
           </textarea>
+        </div>
+        <div>
+          {this.state.validationErrorMessage}
         </div>
         <div>
           <button onClick={this.handleReset}>
