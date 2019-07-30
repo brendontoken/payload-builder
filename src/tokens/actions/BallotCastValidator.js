@@ -1,5 +1,6 @@
 import ActionValidator from "./ActionValidator";
 import { BallotCast, TxId } from "@tokenized/tokenized";
+import { varchar } from "../primitiveTypes";
 
 
 
@@ -20,7 +21,8 @@ class BallotCastValidator extends ActionValidator {
     if (!vote) { throw new Error('"vote is missing in the actionContents."'); }
     if (typeof vote !== 'string') { throw new Error('vote must be a string.'); }
     const voteBuf = Buffer.from(vote, 'utf8');
-    if (voteBuf.length > 255) { throw new Error('Byte representation of vote exceeds maximum length of 255.'); }
+    const maxLength = varchar.maxLengthFor8Bits;
+    if (voteBuf.length > maxLength) { throw new Error(`Byte representation of vote exceeds maximum length of ${maxLength}.`); }
     
     const txIdObject = new TxId();
     txIdObject.UnmarshalJSON(voteTxId);
