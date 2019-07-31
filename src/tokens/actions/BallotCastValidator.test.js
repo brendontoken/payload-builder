@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 
 describe('BallotCastValidator', () => {
-  it('given sample when decoding then BallotCast returned.', () => {
+  it('given sample when decoding then BallotCast action returned.', () => {
     // GIVEN
     const validator = new BallotCastValidator();
     const input = validator.sample;
