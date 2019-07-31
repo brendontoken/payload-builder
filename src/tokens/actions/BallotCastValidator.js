@@ -1,7 +1,7 @@
-import ActionValidator from "./ActionValidator";
-import { BallotCast, TxId } from "@tokenized/tokenized";
-import { varchar } from "../primitiveTypes";
-import { stringIfPresent } from "../primitiveValidators";
+import ActionValidator from './ActionValidator';
+import { BallotCast } from '@tokenized/tokenized';
+import { varchar } from '../primitiveTypes';
+import { stringIfPresent, txIdIfPresent } from '../primitiveValidators';
 
 
 
@@ -9,25 +9,30 @@ class BallotCastValidator extends ActionValidator {
   constructor() {
     super();
     this.actionCode = 'G3';
-    this.txIdRegex = /[0-9a-fA-F]{64}/
+    this.txIdRegex = /[0-9a-fA-F]{64}/;
+    this.sample = `{
+      "header": {
+        "version": 1,
+        "actionCode": "G3"
+      },
+      "actionContents": {
+       "voteTxId":"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
+    "vote":"A"
+      }
+    }`;
   }
 
   _validateVersion1 = (actionContents) => {
     console.log('BallotCastVaidator.validate()');
-    const voteTxId = stringIfPresent(actionContents, 'actionContents', 'voteTxId');
-    if (!voteTxId) { throw new Error('"voteTxId" is missing in the actionContents.'); }
-    if (!this.txIdRegex.test(voteTxId)) { throw new Error('voteTxId must be 64 hex characters.'); }
+    const voteTxId = txIdIfPresent(actionContents, 'actionContents', 'voteTxId');
 
     const vote = stringIfPresent(actionContents, 'actionContents', 'vote');
     const voteBuf = Buffer.from(vote, 'utf8');
     const maxLength = varchar.maxLengthFor8Bits;
     if (voteBuf.length > maxLength) { throw new Error(`Byte representation of vote exceeds maximum length of ${maxLength}.`); }
-    
-    const txIdObject = new TxId();
-    txIdObject.UnmarshalJSON(voteTxId);
 
     const action = new BallotCast();
-    action.vote_tx_id = txIdObject;
+    action.vote_tx_id = voteTxId;
     action.vote = vote;
 
     console.log('BallotCast:', action);
@@ -42,7 +47,7 @@ class BallotCastValidator extends ActionValidator {
       case 1:
         return this._validateVersion1(actionContents);
       default:
-        throw new Error(`version of ${version} in invalid.`);  
+        throw new Error(`version of ${version} is invalid.`);  
     }
   }
 }
