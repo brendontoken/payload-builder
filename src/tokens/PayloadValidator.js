@@ -1,5 +1,7 @@
 import { ContractOffer, OpReturnMessage, Permission, Timestamp, Entity, PublicKeyHash } from '@tokenized/tokenized';
 import BallotCastValidator from './actions/BallotCastValidator';
+import ContractAddressChangeValidator from './actions/ContractAddressChangeValidator';
+import { stringIfPresent, objectIfPresent } from './primitiveValidators';
 
 class PayloadValidator {
 
@@ -10,6 +12,7 @@ class PayloadValidator {
   _assembleActionValidators = () => {
     this.actionValidators = {};
     this._addActionValidator(new BallotCastValidator());
+    this._addActionValidator(new ContractAddressChangeValidator());
   }
 
   constructor() {
@@ -67,7 +70,7 @@ class PayloadValidator {
     if (!Number.isInteger(version)) { throw new Error('version must be an integer.');}
     if (version < 0) { throw new Error('version must be positve.'); }
 
-    const actionCode = header.actionCode;
+    const actionCode = stringIfPresent(header, 'header', 'actionCode');
     if (!actionCode) { throw new Error('"actionCode" missing in header.'); }
     if (actionCode.length !== 2) { throw new Error('actionCode must be two characters.'); }
     if (!/[GEMCART]/.test(actionCode.slice(0, 1))) { throw new Error('The first character of actionCode must be one of: ACEGMRT.') }
@@ -81,14 +84,14 @@ class PayloadValidator {
   }
 
   validate = (spec) => {
-    const header = spec.header;
+    const header = objectIfPresent(spec, 'top level', 'header');
     if (!header) { throw new Error('"header" missing.'); }
     const { version, actionCode } = this._validateHeader(header);
 
     const actionValidator = this.actionValidators[actionCode];
     if (!actionValidator) { throw new Error(`actionCode of "${actionCode}" not recognised.`) }
 
-    const actionContents = spec.actionContents;
+    const actionContents = objectIfPresent(spec, 'top level', 'actionContents');
     if (!actionContents) { throw new Error('"actionContents" missing.'); }
 
     return actionValidator.validate(actionContents, version);

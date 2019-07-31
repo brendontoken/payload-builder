@@ -8,7 +8,6 @@ class ActionValidator {
   validate = (actionContents, version) => {
     throw new Error('Not implemented.');
   }
-
 }
 
 export default ActionValidator

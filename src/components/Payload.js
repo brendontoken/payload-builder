@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { OpReturnMessage } from '@tokenized/tokenized/dist/protocol';
 
 export class Payload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      payload: props.payload
+      payload: props.payload,
+      selectedContentComponents: 'actionContentsOnly'
     }
 
     this.serializedStyle = {
@@ -13,18 +15,71 @@ export class Payload extends Component {
     };
   }
 
+  handleContentComponentSelectionChange = (event) => {
+    this.setState({
+      selectedContentComponents: event.target.value
+    });
+  }
+
   render() {
     let serialized = 'Not serialized.';
     const payload = this.props.payload;
     if (payload) {
       console.log('To display:', payload);
-      serialized = payload.Serialize().toString('hex');
+
+      let serializedBuffer;
+      if (this.state.selectedContentComponents === 'wholeOutput') {
+        const isTest = false;
+        try {
+          serializedBuffer = OpReturnMessage.Serialize(payload, isTest);
+        } catch (e) {
+          serialized = 'Serialization failed.';
+          console.error('Serialization failed.', e);
+        }
+      } else {
+        try {
+          serializedBuffer = payload.Serialize();
+        } catch (e) {
+          serialized = 'Serialization failed.';
+          console.error('Serialization failed.', e);
+        }
+      }
+      
+      if (serializedBuffer) {
+        serialized = serializedBuffer.toString('hex');
+      }
     }
 
     return (
       <div>
         <h3>Generated Payload</h3>
         <h4>Compact</h4>
+
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="content-components"
+              value="actionContentsOnly"
+              checked={this.state.selectedContentComponents === "actionContentsOnly"}
+              onChange={this.handleContentComponentSelectionChange}
+            />
+            Action Contents Only
+            </label>
+          </div>
+
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="content-components"
+                value="wholeOutput"
+                checked={this.state.selectedContentComponents === "wholeOutput"}
+                onChange={this.handleContentComponentSelectionChange}
+              />
+              Whole Output
+            </label>
+          </div>   
         <p style={this.serializedStyle}>{serialized}</p>
         <h4>Expanded</h4>
       </div>

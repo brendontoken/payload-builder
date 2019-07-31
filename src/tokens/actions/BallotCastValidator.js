@@ -1,6 +1,7 @@
 import ActionValidator from "./ActionValidator";
 import { BallotCast, TxId } from "@tokenized/tokenized";
 import { varchar } from "../primitiveTypes";
+import { stringIfPresent } from "../primitiveValidators";
 
 
 
@@ -13,13 +14,11 @@ class BallotCastValidator extends ActionValidator {
 
   _validateVersion1 = (actionContents) => {
     console.log('BallotCastVaidator.validate()');
-    const voteTxId = actionContents.voteTxId;
+    const voteTxId = stringIfPresent(actionContents, 'actionContents', 'voteTxId');
     if (!voteTxId) { throw new Error('"voteTxId" is missing in the actionContents.'); }
-    if (!this.txIdRegex.test(voteTxId)) { throw new Error('voteTxId must be a 64 hex characters.'); }
+    if (!this.txIdRegex.test(voteTxId)) { throw new Error('voteTxId must be 64 hex characters.'); }
 
-    const vote = actionContents.vote;
-    if (!vote) { throw new Error('"vote is missing in the actionContents."'); }
-    if (typeof vote !== 'string') { throw new Error('vote must be a string.'); }
+    const vote = stringIfPresent(actionContents, 'actionContents', 'vote');
     const voteBuf = Buffer.from(vote, 'utf8');
     const maxLength = varchar.maxLengthFor8Bits;
     if (voteBuf.length > maxLength) { throw new Error(`Byte representation of vote exceeds maximum length of ${maxLength}.`); }
@@ -33,7 +32,7 @@ class BallotCastValidator extends ActionValidator {
 
     console.log('BallotCast:', action);
     console.log('BallotCast.Serialize():', action.Serialize().toString('hex'));
-    //console.log('BallotCast.toString():', action.toString());
+    console.log('BallotCast.toString():', action.toString());
 
     return action;
   }
