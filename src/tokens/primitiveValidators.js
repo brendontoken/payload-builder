@@ -51,3 +51,11 @@ export function txIdIfPresent(parent, parentName, name) {
   txId.UnmarshalJSON(txIdText);
   return txId;
 }
+
+export function varcharIfPresent(parent, parentName, name, bitCount) {
+  const s = stringIfPresent(parent, parentName, name);
+  const buf = Buffer.from(s, 'utf8');
+  const maxLength = Math.pow(2, bitCount) - 1;
+  if (buf.length > maxLength) { throw new Error(`Byte representation of ${name} exceeds maximum length of ${maxLength}.`); }
+  return buf;
+}

@@ -14,13 +14,25 @@ export class SampleSelector extends Component {
     super(props);
 
     const sampleArray = getSamples();
+    console.log('Sorting...');
+    sampleArray.sort((a, b) => {
+      if (a.actionCode < b.actionCode) {
+        return -1;
+      }
+      if (a.actionCode > b.actionCode) {
+        return 1;
+      }
+
+      // must be equal
+      return 0;
+    });
     this.options = sampleArray.map((sample) => {
-      return <option key={sample.key} value={sample.key}>{sample.name}</option>
+      return <option key={sample.actionCode} value={sample.actionCode}>{sample.actionCode} - {sample.actionName}</option>
     });
 
     const samples = {};
     sampleArray.forEach((sample) => {
-      samples[sample.key] = sample;
+      samples[sample.actionCode] = sample;
     });
     this.samples = samples;
 

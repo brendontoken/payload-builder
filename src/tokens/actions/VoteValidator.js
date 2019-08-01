@@ -10,14 +10,14 @@ class VoteValidator extends ActionValidator {
     this.actionCode = 'G2';
     this.actionName = 'Vote';
     this.sample = `{
-      "header": {
-        "version": 1,
-        "actionCode": "G2"
-      },
-      "actionContents": {
-        "timestamp":"04 Dec 2019 00:12:00 GMT"
-      }
-    }`;
+  "header": {
+    "version": 1,
+    "actionCode": "G2"
+  },
+  "actionContents": {
+    "timestamp":"04 Dec 2019 00:12:00 GMT"
+  }
+}`;
   }
 
   _validateVersion1 = (actionContents) => {

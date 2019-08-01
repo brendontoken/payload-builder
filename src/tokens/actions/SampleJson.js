@@ -5,8 +5,8 @@ import VoteValidator from "./VoteValidator";
 
 function addSample(samples, validator) {
   samples.push({
-    key: validator.actionCode,
-    name: validator.actionName,
+    actionCode: validator.actionCode,
+    actionName: validator.actionName,
     json: validator.sample
   });
 }
@@ -15,7 +15,8 @@ export function getSamples() {
   const samples = [];
   addSample(samples, new BallotCastValidator());
   addSample(samples, new ContractAddressChangeValidator());
-  addSample(samples, new ThawValidator());
   addSample(samples, new VoteValidator());
+  addSample(samples, new ThawValidator());
+  
   return samples;
 }

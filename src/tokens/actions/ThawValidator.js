@@ -8,15 +8,15 @@ class ThawValidator extends ActionValidator {
     this.actionCode = 'E3';
     this.actionName = 'Thaw';
     this.sample = `{
-      "header": {
-        "version": 1,
-        "actionCode": "E3"
-      },
-      "actionContents": {
-        "freezeTxId": "1212121212121212121212121212121212121212121212121212121212121212",
-        "timestamp":"04 Dec 2019 00:12:00 GMT"
-      }
-    }`;
+  "header": {
+    "version": 1,
+    "actionCode": "E3"
+  },
+  "actionContents": {
+    "freezeTxId": "1212121212121212121212121212121212121212121212121212121212121212",
+    "timestamp":"04 Dec 2019 00:12:00 GMT"
+  }
+}`;
   }
 
   _validateVersion1 = (actionContents) => {

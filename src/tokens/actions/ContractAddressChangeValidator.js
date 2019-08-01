@@ -9,15 +9,15 @@ class ContractAddressChangeValidator extends ActionValidator {
     this.actionName = 'Contract Address Change';
     this.publicKeyHashRegex = /[0-9a-fA-F]{40}/
     this.sample = `{
-      "header": {
-          "version": 1,
-          "actionCode": "C5"
-        },
-        "actionContents": {
-         "newContractPkh": "0102030405060708091011121314151617181920",
-          "timestamp": "04 Dec 2019 00:12:00 GMT"
-        }
-      }`;
+  "header": {
+    "version": 1,
+    "actionCode": "C5"
+  },
+  "actionContents": {
+    "newContractPkh": "0102030405060708091011121314151617181920",
+    "timestamp": "04 Dec 2019 00:12:00 GMT"
+  }
+}`;
   }
 
   _validateVersion1 = (actionContents) => {
