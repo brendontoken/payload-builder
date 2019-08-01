@@ -1,5 +1,7 @@
 class ActionValidator {
   constructor() {
+    this.actionCode = '';
+    this.sample ='';
     if (this.constructor === ActionValidator) {
       throw new TypeError('Abstract class "ActionValidator" cannot be instantiated directly.'); 
     }

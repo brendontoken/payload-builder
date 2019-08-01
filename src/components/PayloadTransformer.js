@@ -2,13 +2,12 @@ import React from 'react'
 
 import JsonInput from './JsonInput';
 import Payload from './Payload';
+import SampleSelector from './SampleSelector';
 
 export class PayloadTransformer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      payload: null
-    };
+    this.state = {};
   }
 
   handlePayloadChange = (payload) => {
@@ -19,6 +18,7 @@ export class PayloadTransformer extends React.Component {
   render() {
     return (
       <div>
+        <h3>Specify Payload Parameters</h3>
         <JsonInput onPayloadChange={this.handlePayloadChange}/>
         <Payload payload={this.state.payload}/>
       </div>

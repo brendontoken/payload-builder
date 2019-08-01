@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PayloadValidator from '../tokens/PayloadValidator';
+import SampleSelector from './SampleSelector';
 
 const defaultInput = `{
   "header": {
@@ -17,20 +18,34 @@ export class JsonInput extends Component {
     this.state = {
       inputValue: defaultInput,
       isValid: true,
+      lastSampleSelected: '',
       validationErrorMessage: ''
     }
 
     this.validator = new PayloadValidator();
   }
 
-  componentDidMount = () => {
+  handleInputChange = (e) => {
+    const text = e.target.value;
+    console.log(`onInputChanged "${text}"`);
+    this.newInput(text);
+  }
+
+  handleReset = (e) => {
+    e.preventDefault();
+    console.log('resetInput');
     this.resetInput();
   }
 
-  handleInputChange = (e) => {
-    const text = e.target.value;
+  handleSampleSelectionChange = (sample) => {
+    this.setState({lastSampleSelected: sample});
+    const text = sample.json;
+    console.log('Sample text:', text);
+    this.newInput(text);
+  }
+
+  newInput = (text) => {
     this.setState({ inputValue: text });
-    console.log(`onInputChanged "${text}"`);
     let parsed;
     try {
       parsed = JSON.parse(text);
@@ -38,7 +53,7 @@ export class JsonInput extends Component {
     } catch(e) {
       this.setState({ 
         isValid: false,
-        validationErrorMessage: 'Not valid JSON.'
+        validationErrorMessage: `Must be valid JSON. ${e.message}.`
        });
       return;
     }
@@ -56,23 +71,16 @@ export class JsonInput extends Component {
     this.props.onPayloadChange(action);
   }
 
-  handleReset = (e) => {
-    e.preventDefault();
-    console.log('resetInput');
-    this.resetInput();
-  }
-
   resetInput = () => {
-    const newText = defaultInput;
-    this.setState({ inputValue: newText });
-    this.props.onPayloadChange(null);
+    const newText = this.state.lastSampleSelected.json;
+    this.newInput(newText);
   }
   
   render() {
     return (
       <div>
         <div>
-          <h3>Specify Payload Parameters</h3>
+          <SampleSelector onSelectionChange={this.handleSampleSelectionChange}/>
           <textarea 
             cols={70} // 64 for txid hex, plus a bit
             onChange={this.handleInputChange}

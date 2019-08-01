@@ -1,6 +1,7 @@
 import { ContractOffer, OpReturnMessage, Permission, Timestamp, Entity, PublicKeyHash } from '@tokenized/tokenized';
 import BallotCastValidator from './actions/BallotCastValidator';
 import ContractAddressChangeValidator from './actions/ContractAddressChangeValidator';
+import ThawValidator from './actions/ThawValidator';
 import { stringIfPresent, objectIfPresent } from './primitiveValidators';
 
 class PayloadValidator {
@@ -13,6 +14,7 @@ class PayloadValidator {
     this.actionValidators = {};
     this._addActionValidator(new BallotCastValidator());
     this._addActionValidator(new ContractAddressChangeValidator());
+    this._addActionValidator(new ThawValidator());
   }
 
   constructor() {
@@ -71,7 +73,6 @@ class PayloadValidator {
     if (version < 0) { throw new Error('version must be positve.'); }
 
     const actionCode = stringIfPresent(header, 'header', 'actionCode');
-    if (!actionCode) { throw new Error('"actionCode" missing in header.'); }
     if (actionCode.length !== 2) { throw new Error('actionCode must be two characters.'); }
     if (!/[GEMCART]/.test(actionCode.slice(0, 1))) { throw new Error('The first character of actionCode must be one of: ACEGMRT.') }
     const actionNumber = Number.parseInt(actionCode.slice(1, 2));
@@ -84,6 +85,8 @@ class PayloadValidator {
   }
 
   validate = (spec) => {
+    if (typeof spec !== 'object') { throw new Error('Must be a JSON object.'); }
+    if (Array.isArray(spec)) { throw new Error('Cannot be an array, must be a JSON object.'); }
     const header = objectIfPresent(spec, 'top level', 'header');
     if (!header) { throw new Error('"header" missing.'); }
     const { version, actionCode } = this._validateHeader(header);

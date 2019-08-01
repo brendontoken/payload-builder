@@ -9,6 +9,7 @@ class BallotCastValidator extends ActionValidator {
   constructor() {
     super();
     this.actionCode = 'G3';
+    this.actionName = 'Ballot Cast';
     this.txIdRegex = /[0-9a-fA-F]{64}/;
     this.sample = `{
       "header": {

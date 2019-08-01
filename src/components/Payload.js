@@ -53,7 +53,6 @@ export class Payload extends Component {
     return (
       <div>
         <h3>Generated Payload</h3>
-        <h4>Compact</h4>
 
         <div>
           <label>
@@ -81,7 +80,6 @@ export class Payload extends Component {
             </label>
           </div>   
         <p style={this.serializedStyle}>{serialized}</p>
-        <h4>Expanded</h4>
       </div>
     )
   }

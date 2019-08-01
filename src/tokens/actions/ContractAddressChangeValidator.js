@@ -6,6 +6,7 @@ class ContractAddressChangeValidator extends ActionValidator {
   constructor() {
     super();
     this.actionCode = 'C5';
+    this.actionName = 'Contract Address Change';
     this.publicKeyHashRegex = /[0-9a-fA-F]{40}/
     this.sample = `{
       "header": {
