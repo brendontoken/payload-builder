@@ -1,4 +1,4 @@
-import { ContractOffer, OpReturnMessage, Permission, Timestamp, Entity, PublicKeyHash } from '@tokenized/tokenized';
+import { ContractOffer, OpReturnMessage, Permission, Timestamp, Entity, PublicKeyHash } from 'tokenized';
 import BallotCastValidator from './actions/BallotCastValidator';
 import ContractAddressChangeValidator from './actions/ContractAddressChangeValidator';
 import ThawValidator from './actions/ThawValidator';

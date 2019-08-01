@@ -1,4 +1,4 @@
-import { Timestamp, TxId } from '@tokenized/tokenized';
+import { Timestamp, TxId } from 'tokenized';
 
 const txIdRegex = /[0-9a-fA-F]{64}/;
 

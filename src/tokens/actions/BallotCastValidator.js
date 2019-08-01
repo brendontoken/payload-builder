@@ -1,5 +1,5 @@
 import ActionValidator from './ActionValidator';
-import { BallotCast } from '@tokenized/tokenized';
+import { BallotCast } from 'tokenized';
 import { varchar } from '../primitiveTypes';
 import { stringIfPresent, txIdIfPresent } from '../primitiveValidators';
 

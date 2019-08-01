@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { OpReturnMessage } from '@tokenized/tokenized/dist/protocol';
+import { OpReturnMessage } from 'tokenized';
 
 export class Payload extends Component {
   constructor(props) {

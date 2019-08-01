@@ -1,5 +1,5 @@
 import ActionValidator from "./ActionValidator";
-import { Thaw } from "@tokenized/tokenized";
+import { Thaw } from "tokenized";
 import { txIdIfPresent, timestampIfPresent } from "../primitiveValidators";
 
 class ThawValidator extends ActionValidator {
@@ -28,7 +28,7 @@ class ThawValidator extends ActionValidator {
     action.timestamp = timestamp;
 
     console.log('Thaw:', action);
-    //console.log('Thaw:', action.toString());
+    console.log('Thaw:', action.toString());
 
     return action;
   }

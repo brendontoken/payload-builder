@@ -2,7 +2,6 @@ import React from 'react'
 
 import JsonInput from './JsonInput';
 import Payload from './Payload';
-import SampleSelector from './SampleSelector';
 
 export class PayloadTransformer extends React.Component {
   constructor(props) {
