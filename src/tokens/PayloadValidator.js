@@ -2,6 +2,7 @@ import { ContractOffer, OpReturnMessage, Permission, Timestamp, Entity, PublicKe
 import BallotCastValidator from './actions/BallotCastValidator';
 import ContractAddressChangeValidator from './actions/ContractAddressChangeValidator';
 import ThawValidator from './actions/ThawValidator';
+import VoteValidator from './actions/VoteValidator';
 import { stringIfPresent, objectIfPresent } from './primitiveValidators';
 
 class PayloadValidator {
@@ -15,6 +16,7 @@ class PayloadValidator {
     this._addActionValidator(new BallotCastValidator());
     this._addActionValidator(new ContractAddressChangeValidator());
     this._addActionValidator(new ThawValidator());
+    this._addActionValidator(new VoteValidator());
   }
 
   constructor() {

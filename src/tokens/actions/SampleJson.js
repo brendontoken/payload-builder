@@ -1,6 +1,7 @@
 import BallotCastValidator from "./BallotCastValidator";
 import ContractAddressChangeValidator from "./ContractAddressChangeValidator";
 import ThawValidator from "./ThawValidator";
+import VoteValidator from "./VoteValidator";
 
 function addSample(samples, validator) {
   samples.push({
@@ -15,5 +16,6 @@ export function getSamples() {
   addSample(samples, new BallotCastValidator());
   addSample(samples, new ContractAddressChangeValidator());
   addSample(samples, new ThawValidator());
+  addSample(samples, new VoteValidator());
   return samples;
 }

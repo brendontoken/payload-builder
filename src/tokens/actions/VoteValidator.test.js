@@ -1,11 +1,11 @@
-import ThawValidator from './ThawValidator';
+import VoteValidator from './VoteValidator';
 import { expect } from 'chai';
 
 
-describe('ThawValidator', () => {
+describe('VoteValidator', () => {
   it('given sample when decoding then action returned.', () => {
     // GIVEN
-    const validator = new ThawValidator();
+    const validator = new VoteValidator();
     const input = validator.sample;
 
     // WHEN

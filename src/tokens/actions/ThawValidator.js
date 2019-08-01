@@ -13,8 +13,8 @@ class ThawValidator extends ActionValidator {
         "actionCode": "E3"
       },
       "actionContents": {
-    "freezeTxId": "1212121212121212121212121212121212121212121212121212121212121212",
-    "timestamp":"04 Dec 2019 00:12:00 GMT"
+        "freezeTxId": "1212121212121212121212121212121212121212121212121212121212121212",
+        "timestamp":"04 Dec 2019 00:12:00 GMT"
       }
     }`;
   }

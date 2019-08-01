@@ -1,5 +1,5 @@
 import ActionValidator from "./ActionValidator";
-import { ContractAddressChange, PublicKeyHash, Timestamp } from "tokenized";
+import { ContractAddressChange, PublicKeyHash } from "tokenized";
 import { timestampIfPresent } from "../primitiveValidators";
 
 class ContractAddressChangeValidator extends ActionValidator {
