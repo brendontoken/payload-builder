@@ -95,9 +95,11 @@ export function uint8ByteIfPresent(parent, parentName, name) {
   return n;
 }
 
-export function varcharIfPresent(parent, parentName, name, maxLength) {
+export function varcharIfPresent(parent, parentName, name, byteCountForLength) {
   const s = stringIfPresent(parent, parentName, name);
   const buf = Buffer.from(s, 'utf8');
+  const bitsForLength = byteCountForLength * 8;
+  const maxLength = Math.pow(2, bitsForLength) - 1; // May exceed what an be accurately represented by a number.
   if (buf.length > maxLength) { throw new Error(`Byte representation of ${name} exceeds maximum length of ${maxLength}.`); }
   return buf;
 }
