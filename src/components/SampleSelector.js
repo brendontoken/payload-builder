@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getSamples } from '../tokens/actions/SampleJson';
+import { getSamplesOrderedByActionCode } from '../tokens/actions/SampleJson';
 
 export class SampleSelector extends Component {
 
@@ -12,22 +12,10 @@ export class SampleSelector extends Component {
 
   constructor(props) {
     super(props);
-
-    const sampleArray = getSamples();
-    console.log('Sorting...');
-    sampleArray.sort((a, b) => {
-      if (a.actionCode < b.actionCode) {
-        return -1;
-      }
-      if (a.actionCode > b.actionCode) {
-        return 1;
-      }
-
-      // must be equal
-      return 0;
-    });
+    
+    const sampleArray = getSamplesOrderedByActionCode();
     this.options = sampleArray.map((sample) => {
-      return <option key={sample.actionCode} value={sample.actionCode}>{sample.actionCode} - {sample.actionName}</option>
+      return <option key={sample.actionCode} value={sample.actionCode}>{sample.actionCode} - {sample.label}</option>
     });
 
     const samples = {};
@@ -35,7 +23,7 @@ export class SampleSelector extends Component {
       samples[sample.actionCode] = sample;
     });
     this.samples = samples;
-
+    
     this.props.onSelectionChange(sampleArray[0]);
   }
 
