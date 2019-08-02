@@ -1,6 +1,41 @@
+import BN from 'bn.js';
 import { Timestamp, TxId } from 'tokenized';
 
 const txIdRegex = /[0-9a-fA-F]{64}/;
+const uint8Max = Math.pow(2, 8) - 1;
+const uint64MaxBn = new BN('ffffffffffffffff', 16);
+
+export function bigNumberIfPresent(parent, parentName, name) {
+  const n = stringIfPresent(parent, parentName, name);
+  let bn;
+  try {
+    bn = new BN(n, 10);
+  } catch (e) {
+    console.error(`Failed to convert ${n} to a big number.`, e);
+    throw new Error(`${name} must be a valid big integer.`);
+  }
+  return bn;
+}
+
+export function bigNumberUint64IfPresent(parent, parentName, name) {
+  const n = bigNumberIfPresent(parent, parentName, name);
+  if (n.cmp(0) < 0) { throw new Error(`${name} must be positive.`); }
+  if (n.cmp(uint64MaxBn) > 0) {throw new Error(`${name} must be less than or equal to ${uint64MaxBn.toString()}.`); }
+  return n;
+}
+
+export function numberIfPresent(parent, parentName, name) {
+  const n = parent[name];
+  const typeofN = typeof n;
+  switch (typeofN) {
+    case 'number':
+      return n;
+    case 'undefined':
+      throw new Error(`"${name}" is missing from ${parentName}.`);
+    default:
+      throw new Error(`"${name}" must be a number.`);
+  }
+}
 
 export function objectIfPresent(parent, parentName, name) {
   const o = parent[name];
@@ -52,10 +87,17 @@ export function txIdIfPresent(parent, parentName, name) {
   return txId;
 }
 
-export function varcharIfPresent(parent, parentName, name, bitCount) {
+export function uint8ByteIfPresent(parent, parentName, name) {
+  // Because an 8-byte uint is too big to be correctly represented in JavaScript.
+  const n = stringIfPresent(parent, parentName, name);
+  if (n < 0) { throw new Error(`${name} must be positive`); }
+  if (n > uint8Max) { throw new Error(`${name} must be ${uint8Max} or less.`); }
+  return n;
+}
+
+export function varcharIfPresent(parent, parentName, name, maxLength) {
   const s = stringIfPresent(parent, parentName, name);
   const buf = Buffer.from(s, 'utf8');
-  const maxLength = Math.pow(2, bitCount) - 1;
   if (buf.length > maxLength) { throw new Error(`Byte representation of ${name} exceeds maximum length of ${maxLength}.`); }
   return buf;
 }
