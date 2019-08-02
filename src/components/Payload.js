@@ -29,7 +29,7 @@ export class Payload extends Component {
 
       let serializedBuffer;
       if (this.state.selectedContentComponents === 'wholeOutput') {
-        const isTest = false;
+        const isTest = true;
         try {
           serializedBuffer = OpReturnMessage.Serialize(payload, isTest);
         } catch (e) {
