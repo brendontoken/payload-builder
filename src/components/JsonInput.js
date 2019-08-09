@@ -39,7 +39,7 @@ export class JsonInput extends Component {
 
   handleSampleSelectionChange = (sample) => {
     this.setState({lastSampleSelected: sample});
-    const text = sample.json;
+    const text = JSON.stringify(sample.sample, null, 2);
     console.log('Sample text:', text);
     this.newInput(text);
   }

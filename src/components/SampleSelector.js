@@ -15,12 +15,12 @@ export class SampleSelector extends Component {
     
     const sampleArray = getSamplesOrderedByActionCode();
     this.options = sampleArray.map((sample) => {
-      return <option key={sample.actionCode} value={sample.actionCode}>{sample.actionCode} - {sample.label}</option>
+      return <option key={sample.code} value={sample.code}>{sample.code} - {sample.label}</option>
     });
 
     const samples = {};
     sampleArray.forEach((sample) => {
-      samples[sample.actionCode] = sample;
+      samples[sample.code] = sample;
     });
     this.samples = samples;
     

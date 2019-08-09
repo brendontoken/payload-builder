@@ -1,11 +1,8 @@
 import BallotCastValidator from './BallotCastValidator';
-import BallotCountedValidator from './BallotCountedValidator';
-import ContractAddressChangeValidator from './ContractAddressChangeValidator';
-import EstablishmentValidator from './EstablishmentValidator';
-import ThawValidator from './ThawValidator';
-import VoteValidator from './VoteValidator';
-import samples from './samples';
+//import samples from './samples';
+import generatedSamples from './action_examples.json';
 
+/*
 let samplesOrderedByActionCode = null;
 
 function addSample(samples, validator) {
@@ -15,10 +12,10 @@ function addSample(samples, validator) {
     json: validator.sample
   });
 }
-
+*/
 export function getSamplesOrderedByActionCode() {
 
-  samples.sort((a, b) => {
+  generatedSamples.sort((a, b) => {
     if (a.actionCode < b.actionCode) {
       return -1;
     }
@@ -30,9 +27,10 @@ export function getSamplesOrderedByActionCode() {
     return 0;
   });
 
-  return samples;
+  return generatedSamples;
 }
 
+/*
 export function getSamples() {
   const samples = [];
   addSample(samples, new BallotCastValidator());
@@ -44,3 +42,4 @@ export function getSamples() {
   
   return samples;
 }
+*/
