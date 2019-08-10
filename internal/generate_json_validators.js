@@ -2,7 +2,8 @@ const fs = require('fs');
 
 console.log('Hello.');
 
-// Property names come accessed by type definitions, so must be PascalCase.
+// Property names are accessed by type definitions, so must be mostly 
+// PascalCase to match their case in the definitions.
 const generalFieldExamples = {
   bin: {
     '32': '0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20'
@@ -49,7 +50,6 @@ function generateJson() {
     const metadata = action.metadata;
     const sample = {
       actionCode: action.id,
-      name: metadata.name,
       label: metadata.label,
     };
 
@@ -87,17 +87,16 @@ function generateJson() {
       jsonObject.actionContents[camelCaseFieldName] = fieldExample || 'NO EXAMPLE';
     });
     
-    sample.json = JSON.stringify(jsonObject, null, 2); // stringify at this point at a later date
+    sample.sampleJson = JSON.stringify(jsonObject); // stringify at this point at a later date
 
     return sample;
   });
 
   console.log('samples:', samples);
 
-  const filename = '../src/tokens/actions/samples.js';
+  const filename = 'action_samples.json';
   const stringified = JSON.stringify(samples, null, 2);
-  const fileContents = `export default ${stringified};`;
-  fs.writeFileSync(filename, fileContents);
+  fs.writeFileSync(filename, stringified);
   console.log(`${filename} written.`);
 }
 
