@@ -1,4 +1,3 @@
-import BallotCastValidator from './BallotCastValidator';
 import generatedSamples from './action_examples.json';
 
 export function getSamplesOrderedByActionCode() {
@@ -11,7 +10,7 @@ export function getSamplesOrderedByActionCode() {
       return 1;
     }
 
-    // must be equal
+    // Must be equal.
     return 0;
   });
 
