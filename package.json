@@ -9,7 +9,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "tokenized": "file:../../gowksp/src/github.com/brendontoken/specification/dist/typescript"
+    "tokenized": "file:../../gowksp/src/github.com/tokenized/specification/dist/typescript"
   },
   "homepage": "https://brendontoken.github.io/payload-builder",
   "scripts": {
